@@ -76,7 +76,8 @@ from .opt_util import alpha_merge, output_merge, pad_dims, unpad_dims
 from .reduction import GpuMaxAndArgmax
 from .linalg import (GpuCusolverSolve, MATRIX_STRUCTURES_SOLVE, GpuCholesky,
                      cusolver_available, GpuMagmaMatrixInverse, gpu_svd,
-                     GpuMagmaCholesky, gpu_qr, GpuMagmaEigh)
+                     GpuMagmaCholesky, gpu_qr, GpuMagmaEigh,
+                     GpuLU, gpu_det)
 from .neighbours import GpuImages2Neibs
 
 _logger = logging.getLogger("theano.gpuarray.opt")
@@ -2122,6 +2123,21 @@ def local_inplace_gpu_solve(node):
                                  inplace=True)(*node.inputs)]
 
 
+#  determinant
+@register_opt('fast_compile')
+@op_lifter([theano.tensor.nlinalg.Det])
+@register_opt2([theano.tensor.nlinalg.Det], 'fast_compile')
+def local_gpu_det(op, context_name, inputs, outputs):
+    if not cusolver_available:
+        return
+    if inputs[0].dtype not in ['float16', 'float32']:
+        return
+    if inputs[0].dtype == 'float16':
+        return gpu_det(inputs[0].astype('float32')).astype('float16')
+    else:
+        return gpu_det(inputs[0])
+
+
 # Cholesky decomposition
 def local_gpu_cholesky(op, context_name, inputs, outputs):
     if not cusolver_available:
@@ -2133,6 +2149,8 @@ def local_gpu_cholesky(op, context_name, inputs, outputs):
         return op(inputs[0].astype('float32')).astype('float16')
 
     return op
+
+
 matrix_ops_db = LocalGroupDB()
 matrix_ops_db2 = LocalGroupDB(local_opt=theano.gof.opt.GraphToGPULocalOptGroup)
 matrix_ops_db2.__name__ = "matrix_ops_db2"
