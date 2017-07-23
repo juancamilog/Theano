@@ -78,6 +78,7 @@ from .reduction import GpuMaxAndArgmax
 from .linalg import (GpuCusolverSolve, MATRIX_STRUCTURES_SOLVE, GpuCholesky,
                      cusolver_available, GpuMagmaMatrixInverse, gpu_svd,
                      GpuMagmaCholesky, gpu_qr, GpuMagmaEigh,
+                     cublas_available, GpuCublasTriangularSolve,
                      gpu_det)
 from .neighbours import GpuImages2Neibs
 
