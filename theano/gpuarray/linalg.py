@@ -17,10 +17,7 @@ from theano.gpuarray import GpuArrayType
 
 from .basic_ops import (CGpuKernelBase, as_gpuarray_variable, gpu_contiguous,
                         infer_context_name)
-<<<<<<< HEAD
-=======
 from .elemwise import GpuElemwise
->>>>>>> merge_all
 from .subtensor import GpuExtractDiag
 from .type import gpu_context_type
 
@@ -205,10 +202,10 @@ class GpuCusolverSolve(Op):
                 workspace_size = cusolver.cusolverDnSpotrf_bufferSize(
                     context.cusolver_handle, 0, n, A_ptr, lda)
 
-            workspace = pygpu.zeros(workspace_size, dtype='float32',
+            workspace = pygpu.empty(workspace_size, dtype='float32',
                                     context=context)
 
-            dev_info = pygpu.zeros((1,), dtype='int32', context=context)
+            dev_info = pygpu.empty((1,), dtype='int32', context=context)
 
             workspace_ptr = workspace.gpudata
             dev_info_ptr = dev_info.gpudata
@@ -229,12 +226,12 @@ class GpuCusolverSolve(Op):
                 workspace_size = cusolver.cusolverDnSgetrf_bufferSize(
                     context.cusolver_handle, n, n, A_ptr, lda)
 
-            workspace = pygpu.zeros(workspace_size, dtype='float32',
+            workspace = pygpu.empty(workspace_size, dtype='float32',
                                     context=context)
 
-            pivots = pygpu.zeros(n, dtype='int32', context=context)
+            pivots = pygpu.empty(n, dtype='int32', context=context)
 
-            dev_info = pygpu.zeros((1,), dtype='int32', context=context)
+            dev_info = pygpu.empty((1,), dtype='int32', context=context)
 
             workspace_ptr = workspace.gpudata
             pivots_ptr = pivots.gpudata
@@ -465,10 +462,10 @@ class GpuCholesky(Op):
             workspace_size = cusolver.cusolverDnSpotrf_bufferSize(
                 context.cusolver_handle, l_parameter, n, L_ptr, lda)
 
-            workspace = pygpu.zeros(workspace_size, dtype='float32',
+            workspace = pygpu.empty(workspace_size, dtype='float32',
                                     context=context)
 
-            dev_info = pygpu.zeros((1,), dtype='int32', context=context)
+            dev_info = pygpu.empty((1,), dtype='int32', context=context)
 
             workspace_ptr = workspace.gpudata
             dev_info_ptr = dev_info.gpudata
@@ -579,12 +576,12 @@ class GpuLU(Op):
             workspace_size = cusolver.cusolverDnSgetrf_bufferSize(
                 context.cusolver_handle, n, n, LU_ptr, lda)
 
-            workspace = pygpu.zeros(workspace_size, dtype='float32',
+            workspace = pygpu.empty(workspace_size, dtype='float32',
                                     context=context)
 
-            pivots = pygpu.zeros(n, dtype='int32', context=context)
+            pivots = pygpu.empty(n, dtype='int32', context=context)
 
-            dev_info = pygpu.zeros((1,), dtype='int32', context=context)
+            dev_info = pygpu.empty((1,), dtype='int32', context=context)
 
             workspace_ptr = workspace.gpudata
             pivots_ptr = pivots.gpudata
