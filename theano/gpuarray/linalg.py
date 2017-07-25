@@ -537,16 +537,11 @@ class GpuLU(Op):
         assert inp.ndim == 2
         assert inp.dtype == 'float32'
 
-<<<<<<< HEAD
-        # outputs a scalar
-        return theano.Apply(self, [inp], [inp.type()])
-=======
         # outputs LU in a single matrix, and a pivots array
         pivots_type = GpuArrayType('int32',
                                    broadcastable=inp[0].broadcastable,
                                    context_name=context_name)()
         return theano.Apply(self, [inp], [inp.type(), pivots_type])
->>>>>>> merge_all
 
     def prepare_node(self, node, storage_map, compute_map, impl):
         ctx = node.inputs[0].type.context
@@ -596,11 +591,8 @@ class GpuLU(Op):
                 if val_dev_info > 0:
                     raise LinAlgError('LU decomposition failed')
 
-<<<<<<< HEAD
-=======
             outputs[1][0] = pivots
 
->>>>>>> merge_all
         outputs[0][0] = LU
 
 
@@ -609,20 +601,6 @@ def gpu_det(A, inplace=False):
         Computes the matrix determinant on the GPU using its LU
         factorization; i.e. if A = PLU then det(A) = (-1)**p*prod(L)*prod(U),
         where p is the number of permuted rows defined by P
-<<<<<<< HEAD
-    """
-    return GpuExtractDiag(view=True)(GpuLU(inplace=inplace)(A)).prod()
-
-
-def gpu_logdet(A, inplace=False):
-    """
-        Computes the logartihm of the matrix determinant on the GPU using 
-        its LU factorization; i.e. if A = PLU then 
-        det(A) = (-1)**p*prod(L)*prod(U),
-        where p is the number of permuted rows defined by P
-    """
-    return theano.tensor.log(GpuExtractDiag(view=True)(GpuLU(inplace=inplace)(A))).sum()
-=======
 
         Parameters
         ----------
@@ -660,7 +638,6 @@ def gpu_slogdet(A, inplace=False):
     p = GpuElemwise(scalar_neq_op)(pivots, idx).sum().astype(A.dtype)
     logabsdet = GpuElemwise(scalar_log_op)(GpuExtractDiag(view=True)(LU)).sum()
     return ((-1)**(p)), logabsdet
->>>>>>> merge_all
 
 
 # TODO: add support
