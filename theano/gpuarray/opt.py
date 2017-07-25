@@ -78,8 +78,8 @@ from .reduction import GpuMaxAndArgmax
 from .linalg import (GpuCusolverSolve, MATRIX_STRUCTURES_SOLVE, GpuCholesky,
                      cusolver_available, GpuMagmaMatrixInverse, gpu_svd,
                      GpuMagmaCholesky, gpu_qr, GpuMagmaEigh,
-                     GpuCublasTriangularSolve, cublas_available,
-                     GpuLU, gpu_det)
+                     cublas_available, GpuCublasTriangularSolve,
+                     gpu_det)
 from .neighbours import GpuImages2Neibs
 
 _logger = logging.getLogger("theano.gpuarray.opt")
